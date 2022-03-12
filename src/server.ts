@@ -26,9 +26,7 @@ wss.on('connection', (ws: WebSocket) => {
     console.log('players size: ', players.length)
     console.log('player Reiting: ', randomRating)
 
-    let match = matchMakingService.startMatchMaking(players)
-
-
+    matchMakingService.startMatchMaking(players)
 });
 
 server.listen(process.env.PORT || 8000, () => {
