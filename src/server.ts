@@ -1,10 +1,8 @@
 import * as WebSocket from "ws"
-import {Queue} from "./model/Queue";
 import {Player} from "./model/Player";
 import * as express from 'express';
 import * as http from 'http';
 import { MatchMakingService } from "./MatchMakingService";
-import {Match} from "./model/Match";
 
 const app = express();
 
@@ -31,8 +29,6 @@ wss.on('connection', (ws: WebSocket) => {
 
 server.listen(process.env.PORT || 8000, () => {
 
-    // @ts-ignore
-    console.log(`Server started on address: ${server.address()} :)`);
     // @ts-ignore
     console.log(`Server port: ${server.address().port} :)`);
 });
