@@ -11,6 +11,12 @@ export class Match {
         this._allPlayers = []
     }
 
+    public toString(): string {
+        return "TEAM 1: " + this._team1.map(p => "\n" + p.getInfo()) +
+            "\nTEAM 2: " + this._team2.map(p => "\n" + p.getInfo()) +
+            "\nRating Diff = " + this.getDiffRatings().toString() + "\n"
+    }
+
     public addPlayerInTeam1(player: Player): void {
         this._team1?.push(player)
         this._allPlayers?.push(player)

@@ -9,6 +9,11 @@ export class Player {
         this._name = name;
     }
 
+    public getInfo(): string {
+        return "Name: " + this.name +
+            " Rating: " + this._rating.toString()
+    }
+
     public setTeam(team: number) {
         this._team = team;
     }

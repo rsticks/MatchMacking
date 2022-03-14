@@ -1,6 +1,7 @@
 import {Queue} from "./model/Queue";
 import {Player} from "./model/Player";
 import {Match} from "./model/Match";
+import * as WebSocket from "ws";
 
 export class MatchMakingService {
     // @ts-ignore
@@ -41,15 +42,16 @@ export class MatchMakingService {
         let diff = match.getDiffRatings();
 
         console.log("rating diff: ", diff)
-        if (diff > 100) {
+        if (diff > 50) {
             return new Match()
         }
 
         return match
     }
 
-    public startMatchMaking(players: Array<Player>) {
+    public startMatchMaking(players: Array<Player>): Array<Match> {
         let playersIsDiff: boolean = true;
+        let matchs: Array<Match> = [];
 
         while (playersIsDiff) {
             let match = MatchMakingService.startDistribution(players)
@@ -60,10 +62,14 @@ export class MatchMakingService {
             console.log('All players : ', players)
             if (match.allPlayers.length == 0) {
                 playersIsDiff = false;
+            } else {
+                matchs.push(match)
             }
 
         }
+
         console.log('All players at END : ', players)
+        return matchs;
     }
 
     private static startDistribution(players: Array<Player>): Match {

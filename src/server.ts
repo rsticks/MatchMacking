@@ -3,6 +3,7 @@ import {Player} from "./model/Player";
 import * as express from 'express';
 import * as http from 'http';
 import { MatchMakingService } from "./MatchMakingService";
+import {Match} from "./model/Match";
 
 const app = express();
 
@@ -19,12 +20,23 @@ wss.on('connection', (ws: WebSocket) => {
     // рандом 0 - 1000
     let randomRating: number = Math.random() * 1000;
 
-    players.push(new Player(count.toString(), randomRating))
+    let player: Player = new Player(count.toString(), randomRating)
+    players.push(player)
+    ws.send("New player: " + player.getInfo());
     count++;
     console.log('players size: ', players.length)
     console.log('player Reiting: ', randomRating)
 
-    matchMakingService.startMatchMaking(players)
+    let matchs: Array<Match> = matchMakingService.startMatchMaking(players)
+
+    if (matchs.length > 0) {
+        ws.send(matchs.map(m => m.toString()).toString());
+        for (let playersInMatch of matchs.map(m => m.allPlayers)) {
+            playersInMatch.forEach(p => {
+                players = players.filter((a: Player) => a.name != p.name)
+            })
+        }
+    }
 });
 
 server.listen(process.env.PORT || 8000, () => {
